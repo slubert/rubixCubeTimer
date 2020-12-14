@@ -16,7 +16,7 @@
         width: 100%;
     }
 
-        .fiveRecentList{
+        #fiveRecentList{
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -25,47 +25,16 @@
             width: 100%;
             /* background-color: gray; */
         }
-            #spot1{
+            .recentBoxs{
                 height: 100%;
                 width: 100%;
-                padding: 0rem 4rem;
+                padding: 1rem 4rem;
                 font-size: 20px;
                 /* border-bottom: 1px solid black; */
             }
-            #spot2{
-                height: 100%;
-                width: 100%;
-                padding: 0rem 4rem;
-                font-size: 20px;
-                /* border-bottom: 2px solid black; */
-            }  
-            #spot3{
-                height: 100%;
-                width: 100%;
-                padding: 0rem 4rem;
-                font-size: 20px;
-                /* border-bottom: 2px solid black; */
-            }
-            #spot4{
-                height: 100%;
-                width: 100%;
-                padding: 0rem 4rem;
-                font-size: 20px;
-                /* border-bottom: 2px solid black; */
-            }
-            #spot5{
-                height: 100%;
-                width: 100%;
-                padding: 0rem 4rem;
-                font-size: 20px;
-                /* border-bottom: 2px solid black; */
-            }
-            #averageTime{
-                height: 100%;
-                width: 100%;
+            #currentAverageTime{
+                font-family: 'Montserrat', sans-serif;;
                 text-decoration: underline;
-                padding: 0rem 5rem;
-                font-size: 30px;
             }
             #output{
                 font-size: 50px;
