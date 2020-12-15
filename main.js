@@ -37,6 +37,7 @@ else{
 
 function onHoldDown(e){
     if (e.touches.length > 6){
+        alert('more then six')
         if (!counting){
             hide()
             
