@@ -17,6 +17,15 @@ let times = []
 let sumOfAvridge
 let isMobile
 
+var keys = {
+    a: false,
+    s: false,
+    d: false,
+    j: false,
+    k: false,
+    l: false
+};
+
 //check if the phone is flipped and relodes the sight if so 
 window.addEventListener("orientationchange", function() {
     window.location.reload();
@@ -38,123 +47,176 @@ else{
 if (mobileCheck()){
     //if mobile
     isMobile = true;
-    alert('phone')
 
     //checks so the orgentation is vertical if not asks you to flip your phone 
     if (window.innerWidth < window.innerHeight){
         hide();
-        info.innerHTML = 'flip your phone 🔄'
+        info.innerHTML = 'flip your phone'
     }
     else{
-        window.addEventListener('touchstart', onHoldDown);
-        window.addEventListener('touchend', onHoldUp)
+        window.addEventListener('touchstart', onKeyDown);
+        window.addEventListener('touchend', onKeyUp)
 
         info.textContent = 'plase 6 fingers on the screen to start'
     }
 }
 else{
-    //if pc
-    alert('pc')
-    window.addEventListener('keyup', onHoldDown);
-    window.addEventListener('keydown', onHoldUp)
+    //if on pc
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onKeyUp);
 
     info.textContent = 'hold \'A\' \'S\' \'D\' \'J\' \'K\' \'L\' to start'
 }
 
 
-function onHoldDown(event){
-    console.log(event.keyCode)
-    if (checkIfFingersAreOnScreen(event) || checkIfKeysAreDown(event)){
-        if (!counting){
+function onKeyDown(event){
+    // save status of the button 'pressed' == 'true'
+    // A key
+    if (event.keyCode == 65) {
+        keys.a = true;
+    // S key
+    } else if (event.keyCode == 83) {
+        keys["s"] = true;
+    // D key
+    }else if (event.keyCode == 68){
+        keys["d"] = true;
+    // J key
+    }else if (event.keyCode == 74){
+        keys["j"] = true;
+    // K key
+    }else if (event.keyCode == 75){
+        keys["k"] = true;
+    // L key
+    }else if (event.keyCode == 76){
+        keys.l = true;
+    }
+
+    //if "counting" == false displays a message to get the user to relice to start the timer 
+    if (!counting){
+        if ((isMobile && checkIfFingersAreOnScreen(event)) || checkIfKeysAreDown(event)){
+
             hide()
-    
             info.textContent = 'relice to start'
         }
-        else{
-            console.log('stop');
-            timeStop = new Date()
-    
-            if (isMobile){
-                info.textContent = 'plase 6 fingers on the screen to start'
+    }
+    //if "counting" == true it stops the timer
+    else if(counting){
+        console.log('stop');
+        timeStop = new Date()
+        counting = false
+        
+        //checks if the user has played 5 times
+        if (times.length >= boxAmount){
+            bestTimes = {
+                single: bestTimes.single,
+                average: currentAverageTime.textContent
             }
-            else{
-                info.textContent = 'hold \'A\' \'S\' \'D\' \'J\' \'K\' \'L\' to start'
-            }
-    
-            //checks if you have played 5 times
-            if (times.length >= boxAmount){
-                bestTimes = {
-                    single: bestTimes.single,
-                    average: currentAverageTime.textContent
-                }
-                localStorage.setItem('bestTimes', JSON.stringify(bestTimes))
-    
-                console.log('too many')
-                times.length = 0;
-            }
+            localStorage.setItem('bestTimes', JSON.stringify(bestTimes))
             
-            setToRcentFive(timeCalculate());
-    
-            show()
+            console.log('too many')
+            times.length = 0;
+        }
+        
+        setToRcentFive(timeCalculate());
+        
+        show()
+        //display informatin on how to strat the timer again 
+        if (isMobile){
+            //user is on mobile 
+            info.textContent = 'plase 6 fingers on the screen to start'
+        }
+        else{
+            //user is on pc
+            info.textContent = 'hold \'A\' \'S\' \'D\' \'J\' \'K\' \'L\' to start'
         }
     }
 }
 
-function onHoldUp(e){
-    if (!counting){
+function onKeyUp(event){
+    
+    //checks the state of "counting"
+    if (!counting && checkIfKeysAreDown(event)){
+        //gets the starting time
         console.log('start');
         timeStart = new Date()
         counting = true
         info.textContent = 'solve'
     }
-    else{
-        counting = false;
+
+    // reset status of the button 'released' == 'false'
+    // A key
+    if (event.keyCode == 65) {
+        keys.a = false;
+    //S key
+    } else if (event.keyCode == 83) {
+        keys["s"] = false;
+    // D key
+    }else if (event.keyCode == 68){
+        keys["d"] = false;
+    // J key
+    }else if (event.keyCode == 74){
+        keys["j"] = false;
+    // K key
+    }else if (event.keyCode == 75){
+        keys["k"] = false;
+    //L key
+    }else if (event.keyCode == 76){
+        keys["l"] = false;
     }
 }
 
+//sets the latest playd time in the "fiver recent times box"
 function setToRcentFive(time){
     times.push(time)
     sumOfAvridge = 0
     for (let i = 0; i < times.length; i++) {
         sumOfAvridge += parseFloat(times[i]) 
     }
+    //calculates the avridge time from the five recent plays
     currentAverageTime.textContent = (sumOfAvridge / times.length).toFixed(3)
 
     fiveRecentList.innerHTML = ''
     
-    //display the numbers in times array
+    //displays the numbers in times array
     for (let i = 0; i < boxAmount; i++) {
         var boxes = document.createElement('div');
         fiveRecentList.appendChild(boxes);
         boxes.classList.add('recentBoxs');
         boxes.textContent = times[i]
     }
+    //gets best times from local storidge
     bestTimes = JSON.parse(localStorage.getItem('bestTimes'))
     bestSingleTime.textContent = bestTimes.single + 's'
     bestAverageTime.textContent = bestTimes.average + 's'
 }
 
-
+//checks so more then 6 fingers is placed on the screen at once 
 function checkIfFingersAreOnScreen(event){
     if(event.touches.length > 6){
         return(true)
     }
+    return(false)
 }
 
+// chesk so 'a s d j k l' is pressed simultaneously 
 function checkIfKeysAreDown(event){
-    if(event.keyCode == 65 && event.keyCode == 68 && event.keyCode == 74 && event.keyCode == 75 && event.keyCode == 76 && event.keyCode == 83 ){
+    //chesk so the state of all the keys are true
+    if (keys.a && keys.s && keys.d && keys.j && keys.k && keys.l ) {
         return(true)
     }
+    return(false)
 }
+
 
 //calculate time function
 function timeCalculate(){
     finalTime = (timeStop.getTime() - timeStart.getTime()) / 1000
     checkBestTime(finalTime);
-    console.log(finalTime)
+    console.log('time ' + finalTime)
     return(finalTime)
 }
 
+//checks if the recent time was better then the previus best time s
 function checkBestTime(){
     if (bestTimes == null || finalTime < bestTimes.single){
         bestTimes = {
@@ -171,7 +233,6 @@ function mobileCheck() {
     return check;
 };
 
-
 //show and hide functions
 function hide(){
     fiveRecentBox.style.display = 'none'
@@ -183,6 +244,3 @@ function show(){
     startBox.style.display = null
     info.style.fontSize = '2rem'
 }  
-
-
-// button.textContent = e.touches.length
