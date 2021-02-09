@@ -140,7 +140,7 @@ function onKeyUp(event){
         console.log('start');
         timeStart = new Date()
         counting = true
-        info.textContent = 'solve'
+        info.innerHTML = 'solve <br> press any key to stop' 
     }
 
     // reset status of the button 'released' == 'false'
