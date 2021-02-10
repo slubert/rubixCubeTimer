@@ -18,7 +18,7 @@ let timeStart
 boxAmount = 5
 let times = []
 let sumOfAvridge
-let isMobile
+let onMobile
 
 var keys = {
     a: false,
@@ -49,7 +49,7 @@ else{
 // checks if user is on mobile or not
 if (mobileCheck()){
     //if mobile
-    isMobile = true;
+    onMobile = true;
 
     //checks so the orgentation is vertical if not asks you to flip your phone 
     if (window.innerWidth < window.innerHeight){
@@ -73,6 +73,7 @@ else{
 
 
 function onKeyDown(event){
+    console.log(counting)
     // save status of the button 'pressed' == 'true'
     // A key
     if (event.keyCode == 65) {
@@ -96,17 +97,18 @@ function onKeyDown(event){
 
     //if "counting" == false displays a message to get the user to relice to start the timer 
     if (!counting){
-        if ((isMobile && checkIfFingersAreOnScreen(event)) || checkIfKeysAreDown()){
+        if ((onMobile && checkIfFingersAreOnScreen(event)) || checkIfKeysAreDown()){
             initialHold = true
             hide()
             info.textContent = 'relice to start'
         }
     }
     //if "counting" == true it stops the timer
-    else if(counting){
+    else{
         timeStop = new Date()
+
         //if user is on pc the counting = false erlyer
-        if (!isMobile){counting = false}
+        if (!onMobile){counting = false}
         console.log('stop');
         
         //checks if the user has played 5 times
@@ -125,7 +127,7 @@ function onKeyDown(event){
         
         show()
         //display informatin on how to strat the timer again 
-        if (isMobile){
+        if (onMobile){
             //user is on mobile 
             info.textContent = 'plase 6 fingers on the screen to start'
         }
@@ -138,17 +140,22 @@ function onKeyDown(event){
 
 function onKeyUp(event){
     //checks the state of "counting"
-    if (!counting && ((isMobile && initialHold) || checkIfKeysAreDown()) ){
+    if (!counting && ((onMobile && initialHold) || checkIfKeysAreDown()) ){
         //gets the starting time
         timeStart = new Date()
         counting = true
         initialHold = false
         console.log('start');
-        info.innerHTML = 'solve <br> press any key to stop' 
+        if (onMobile){
+            info.innerHTML = 'solve <br> click on screen to stop'    
+        }
+        else{
+            info.innerHTML = 'solve <br> press any key to stop' 
+        }
     }
     else if(counting){
         //if user is on modlile counting = false later then on pc 
-        if(isMobile){counting = false}
+        if(onMobile){counting = false}
     }
 
     // reset status of the button 'released' == 'false'
@@ -200,7 +207,7 @@ function setToRcentFive(time){
 
 //checks so more then 6 fingers is placed on the screen at once 
 function checkIfFingersAreOnScreen(event){
-    if(event.touches.length > 5){
+    if(event.touches.length > 0){
         console.log('more the 6 fingers')
         return(true)
     }
