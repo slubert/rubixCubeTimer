@@ -9,6 +9,8 @@ const bestSingleTime = document.getElementById("bestSingleTime");
 const bestAverageTimeBox = document.getElementById("bestAverageTimeBox");
 const bestAverageTime = document.getElementById("bestAverageTime");
 
+console.log('v1')
+
 let counting = false;
 let initialHold = false;
 let timeStop
