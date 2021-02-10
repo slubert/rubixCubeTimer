@@ -207,7 +207,7 @@ function setToRcentFive(time){
 
 //checks so more then 6 fingers is placed on the screen at once 
 function checkIfFingersAreOnScreen(event){
-    if(event.touches.length > 0){
+    if(event.touches.length > 5){
         console.log('more the 6 fingers')
         return(true)
     }
