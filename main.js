@@ -94,16 +94,16 @@ function onKeyDown(event){
     //if "counting" == false displays a message to get the user to relice to start the timer 
     if (!counting){
         if ((isMobile && checkIfFingersAreOnScreen(event)) || checkIfKeysAreDown(event)){
-
             hide()
             info.textContent = 'relice to start'
         }
     }
     //if "counting" == true it stops the timer
     else if(counting){
-        console.log('stop');
         timeStop = new Date()
-        counting = false
+        //if user is on pc the counting = false erlyer
+        if (!isMobile){counting = false}
+        console.log('stop');
         
         //checks if the user has played 5 times
         if (times.length >= boxAmount){
@@ -133,14 +133,17 @@ function onKeyDown(event){
 }
 
 function onKeyUp(event){
-    
     //checks the state of "counting"
-    if (!counting && checkIfKeysAreDown(event)){
+    if (!counting && (isMobile && checkIfFingersAreOnScreen) || (checkIfKeysAreDown(event))){
         //gets the starting time
-        console.log('start');
         timeStart = new Date()
         counting = true
+        console.log('start');
         info.innerHTML = 'solve <br> press any key to stop' 
+    }
+    else if(counting){
+        //if user is on modlile counting = false later 
+        if(isMobile){counting = false}
     }
 
     // reset status of the button 'released' == 'false'
@@ -192,7 +195,7 @@ function setToRcentFive(time){
 
 //checks so more then 6 fingers is placed on the screen at once 
 function checkIfFingersAreOnScreen(event){
-    if(event.touches.length > 6){
+    if(event.touches.length >= 6){
         return(true)
     }
     return(false)
