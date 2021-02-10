@@ -134,7 +134,7 @@ function onKeyDown(event){
 
 function onKeyUp(event){
     //checks the state of "counting"
-    if (!counting && (isMobile && checkIfFingersAreOnScreen) || (checkIfKeysAreDown(event))){
+    if (!counting && (isMobile && checkIfFingersAreOnScreen(event)) || (checkIfKeysAreDown(event))){
         //gets the starting time
         timeStart = new Date()
         counting = true
@@ -195,7 +195,7 @@ function setToRcentFive(time){
 
 //checks so more then 6 fingers is placed on the screen at once 
 function checkIfFingersAreOnScreen(event){
-    if(event.touches.length >= 6){
+    if(event.touches.length > 5){
         return(true)
     }
     return(false)
