@@ -134,7 +134,7 @@ function onKeyDown(event){
 
 function onKeyUp(event){
     //checks the state of "counting"
-    if (!counting && (isMobile && checkIfFingersAreOnScreen(event)) || (checkIfKeysAreDown(event))){
+    if (!counting && (isMobile || checkIfKeysAreDown(event))){
         //gets the starting time
         timeStart = new Date()
         counting = true
