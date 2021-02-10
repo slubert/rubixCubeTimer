@@ -10,6 +10,7 @@ const bestAverageTimeBox = document.getElementById("bestAverageTimeBox");
 const bestAverageTime = document.getElementById("bestAverageTime");
 
 let counting = false;
+let initialHold = false;
 let timeStop
 let timeStart
 boxAmount = 5
@@ -93,7 +94,8 @@ function onKeyDown(event){
 
     //if "counting" == false displays a message to get the user to relice to start the timer 
     if (!counting){
-        if ((isMobile && checkIfFingersAreOnScreen(event)) || checkIfKeysAreDown(event)){
+        if ((isMobile && checkIfFingersAreOnScreen(event)) || checkIfKeysAreDown()){
+            initialHold = true
             hide()
             info.textContent = 'relice to start'
         }
@@ -134,15 +136,16 @@ function onKeyDown(event){
 
 function onKeyUp(event){
     //checks the state of "counting"
-    if (!counting && (isMobile || checkIfKeysAreDown(event))){
+    if (!counting && ((isMobile && initialHold) || checkIfKeysAreDown()) ){
         //gets the starting time
         timeStart = new Date()
         counting = true
+        initialHold = false
         console.log('start');
         info.innerHTML = 'solve <br> press any key to stop' 
     }
     else if(counting){
-        //if user is on modlile counting = false later 
+        //if user is on modlile counting = false later then on pc 
         if(isMobile){counting = false}
     }
 
@@ -196,14 +199,14 @@ function setToRcentFive(time){
 //checks so more then 6 fingers is placed on the screen at once 
 function checkIfFingersAreOnScreen(event){
     if(event.touches.length > 5){
+        console.log('more the 6 fingers')
         return(true)
     }
     return(false)
 }
 
 // chesk so 'a s d j k l' is pressed simultaneously 
-function checkIfKeysAreDown(event){
-    //chesk so the state of all the keys are true
+function checkIfKeysAreDown(){
     if (keys.a && keys.s && keys.d && keys.j && keys.k && keys.l ) {
         return(true)
     }
