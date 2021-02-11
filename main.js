@@ -1,3 +1,4 @@
+const background = document.getElementById("pageContainer")
 const midBox = document.getElementById("midBox")
 const fiveRecentBox = document.getElementById('fiveRecentBox')
 const fiveRecentList = document.getElementById('fiveRecentList')
@@ -8,8 +9,6 @@ const bestSingleTimeBox = document.getElementById("bestSingleTimeBox");
 const bestSingleTime = document.getElementById("bestSingleTime");
 const bestAverageTimeBox = document.getElementById("bestAverageTimeBox");
 const bestAverageTime = document.getElementById("bestAverageTime");
-
-console.log('v2')
 
 let counting = false;
 let initialHold = false;
@@ -73,7 +72,6 @@ else{
 
 
 function onKeyDown(event){
-    console.log(counting)
     // save status of the button 'pressed' == 'true'
     // A key
     if (event.keyCode == 65) {
@@ -96,20 +94,20 @@ function onKeyDown(event){
     }
 
     //if "counting" == false displays a message to get the user to relice to start the timer 
-    if (!counting){
-        if ((onMobile && checkIfFingersAreOnScreen(event)) || checkIfKeysAreDown()){
-            initialHold = true
-            hide()
-            info.textContent = 'relice to start'
-        }
+    if (!counting && ((onMobile && checkIfFingersAreOnScreen(event)) || checkIfKeysAreDown()) ){
+        initialHold = true
+        hide()
+        info.textContent = 'relice to start'
+        //sets backgournd color to yellow
+        background.style.backgroundColor = 'rgb(199, 199, 5)'
     }
     //if "counting" == true it stops the timer
-    else{
+    else if(counting){
         timeStop = new Date()
-
-        //if user is on pc the counting = false erlyer
-        if (!onMobile){counting = false}
+        counting = false
         console.log('stop');
+
+        background.style.backgroundColor = 'rgb(77,77,77)'
         
         //checks if the user has played 5 times
         if (times.length >= boxAmount){
@@ -119,7 +117,6 @@ function onKeyDown(event){
             }
             localStorage.setItem('bestTimes', JSON.stringify(bestTimes))
             
-            console.log('too many')
             times.length = 0;
         }
         
@@ -147,15 +144,15 @@ function onKeyUp(event){
         initialHold = false
         console.log('start');
         if (onMobile){
-            info.innerHTML = 'solve <br> click on screen to stop'    
+            info.innerHTML = 'solve <br> click on screen to stop'
+            //sets backgournd color to green 
+            background.style.backgroundColor = 'rgb(51, 204, 51)' 
         }
         else{
             info.innerHTML = 'solve <br> press any key to stop' 
+            //sets backgournd color to green
+            background.style.backgroundColor = 'rgb(51, 204, 51)' 
         }
-    }
-    else if(counting){
-        //if user is on modlile counting = false later then on pc 
-        if(onMobile){counting = false}
     }
 
     // reset status of the button 'released' == 'false'
@@ -208,7 +205,6 @@ function setToRcentFive(time){
 //checks so more then 6 fingers is placed on the screen at once 
 function checkIfFingersAreOnScreen(event){
     if(event.touches.length > 5){
-        console.log('more the 6 fingers')
         return(true)
     }
     return(false)

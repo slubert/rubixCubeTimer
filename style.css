@@ -1,4 +1,4 @@
-.pageContainer{
+#pageContainer{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -19,7 +19,6 @@
             align-items: center;
             height: 75%;
             width: 100%; 
-            /* background-color: pink; */
         }
             .recentBoxs{
                 height: 100%;
@@ -62,7 +61,6 @@
             width: 100%;
             font-size: 2rem;
             color: white;
-            /* background-color: red; */
         }
 
         #startBox{
@@ -72,7 +70,6 @@
             align-items: center;
             height: 35vh;
             width: 100%;
-            /* background-color: purple; */
         }
             #bestSingleTimeBox{
                 display: flex;
@@ -114,13 +111,3 @@
 body{
     margin: 0px;
 }
-
-/* #output{
-    font-size: 50px;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Montserrat', sans-serif;;
-} */
