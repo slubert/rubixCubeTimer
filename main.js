@@ -99,7 +99,7 @@ function onKeyDown(event){
         hide()
         info.textContent = 'relice to start'
         //sets backgournd color to yellow
-        background.style.backgroundColor = 'rgb(199, 199, 5)'
+        background.style.backgroundColor = 'rgb(230, 230, 25)'
     }
     //if "counting" == true it stops the timer
     else if(counting){
